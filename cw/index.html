@@ -3,28 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/popup.css">
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="./script/popup.js"></script>
 </head>
 <body>
-    <h1>my Tabs</h1>
-    <div class="tabs-conteiner">
-        <ul class="tabs">
-            <li class="active">Tab1</li>
-            <li>Tab2</li>
-            <li>Tab3</li>
-        </ul>
-        <ul class="tab-content">
-            <li class="active">Lorem ipsum <span class="tooltip" title="Подсказка 2">dolor sit amet, consectetur adipisicing elit</span>. Explicabo fuga impedit quas quos tenetur
-                veritatis! Adipisci iusto necessitatibus nemo voluptates.
-            </li>
-            <li>Accusamus architecto atque consectetur dolores, in inventore ipsa iusto laboriosam libero obcaecati
-                praesentium quos rem saepe sed temporibus, totam unde.
-            </li>
-            <li>Aperiam assumenda dicta <span class="tooltip" title="Подсказка">dolore dolorum et, eum fuga</span> hic id incidunt labore nisi nobis perferendis quia,
-                unde voluptatibus. Incidunt, similique!
-            </li>
-        </ul>
+    <h1>Lorem ipsum dolor.</h1>
+    <a href="https://via.placeholder.com/800" data-popup="zoom"><img src="https://via.placeholder.com/200" alt="#"></a>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur esse necessitatibus nihil sunt. Hic id
+        illum ipsa, magni obcaecati quam?</p>
+    <a href="https://via.placeholder.com/1200" data-popup="zoom"><img src="https://via.placeholder.com/150" alt=""></a>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque delectus deleniti doloremque est fugiat itaque
+        modi nihil quis tenetur veritatis?</p>
+    <p>Lorem ipsum <a href="#" data-id="video" data-popup="content">dolor sit amet, consectetur adipisicing elit</a>. Accusantium ad animi aut culpa cumque distinctio
+        eligendi expedita harum iure labore magnam magni minima minus molestias, quos repellat sapiente totam vitae.</p>
+    <button data-popup="content" data-id="feedback">Send</button>
+
+    <button id="li_add">add li</button>
+
+    <ul>
+        <li>Lorem ipsum.</li>
+        <li>Eos, iusto!</li>
+        <li>Blanditiis, quidem?</li>
+        <li>Dolorum, sit.</li>
+    </ul>
+
+    <div id="feedback" class="popup-container">
+        <form>
+            <h3>Lorem ipsum dolor.</h3>
+            <input type="text" name="text" placeholder="Name">
+            <button type="submit">Send</button>
+        </form>
     </div>
-    <script src="./tabs.js"></script>
+
+    <div class="popup-container" id="video">
+        <iframe width="560"
+                height="315" src="https://www.youtube.com/embed/l6IYeBD0MFI"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+<!--    <div class="popup">-->
+<!--        <div class="popup-modal">-->
+<!--            <div class="popup-close">X</div>-->
+<!--            <div class="popup-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore laudantium mollitia nesciunt-->
+<!--                quasi rem ullam ut! Accusamus deserunt doloribus facere in ipsa iure molestiae nihil nulla, odit-->
+<!--                provident quia velit?-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </body>
+<script src="./script/script.js"></script>
 </html>
