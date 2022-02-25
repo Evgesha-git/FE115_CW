@@ -24,20 +24,24 @@ if(popup) popup();
 //
 // })
 //
-// let h1 = document.querySelector('p');
-//
-// h1.addEventListener('mouseenter', function (e){
-//     let tooltip = document.createElement('div');
-//     tooltip.setAttribute('class', 'tooltip');
-//     tooltip.innerText = 'Просто кой нибудь тект для заполнения';
-//
-//     document.body.append(tooltip)
-//
-//     let x = e.x;
-//     let y = e.target.offsetWidth;
-//
-//     tooltip.style.top = x + 'px';
-//     tooltip.style.left = y + 'px';
-//
-//     console.log(e.target, e)
-// })
+let elem = document.querySelector('span');
+
+elem.addEventListener('mouseenter', function (e){
+    let tooltip = document.createElement('div');
+    tooltip.setAttribute('class', 'tooltip');
+    tooltip.innerText = 'Просто кой нибудь тект для заполнения';
+
+    document.body.append(tooltip)
+
+    let x = e.target.offsetLeft;
+    let y = e.target.offsetTop;
+
+    if((tooltip.offsetHeight + 15) > e.clientY){
+        y -= e.target.offsetHeight - tooltip.offsetHeight;
+    }else{
+        y -= e.target.offsetHeight + 15;
+    }
+
+    tooltip.style.top = y + 'px';
+    tooltip.style.left = x + 'px';
+})
