@@ -29,7 +29,7 @@ let elem = document.querySelector('span');
 elem.addEventListener('mouseenter', function (e){
     let tooltip = document.createElement('div');
     tooltip.setAttribute('class', 'tooltip');
-    tooltip.innerText = 'Просто кой нибудь тект для заполнения';
+    tooltip.innerText = 'Просто кой нибудь тект для заполнения бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла';
 
     document.body.append(tooltip)
 
@@ -37,9 +37,9 @@ elem.addEventListener('mouseenter', function (e){
     let y = e.target.offsetTop;
 
     if((tooltip.offsetHeight + 15) > e.clientY){
-        y -= e.target.offsetHeight - tooltip.offsetHeight;
+        y += e.target.offsetHeight + 5;
     }else{
-        y -= e.target.offsetHeight + 15;
+        y -= e.target.offsetHeight + tooltip.offsetHeight - 15;
     }
 
     tooltip.style.top = y + 'px';
