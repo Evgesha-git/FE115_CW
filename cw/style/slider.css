@@ -1,0 +1,49 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.my-slider{
+    position: relative;
+    border: 1px solid #000;
+    margin: 50px;
+    overflow: hidden;
+    /*transition: transform 3s ease;*/
+}
+
+.my-slider ul{
+    list-style: none;
+    display: flex;
+    transition: transform 3s ease;
+
+}
+
+.my-slider ul li{
+    flex: none;
+    background: cornflowerblue;
+    padding: 10px;
+    margin: 5px;
+    /*border:2px solid red;*/
+    width: calc(100% - 30px);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn{
+    position: absolute;
+    background: rgba(255, 255, 255, .8);
+    top: calc(50% - 25px);
+    width: 70px;
+    height: 50px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-next{
+    right: 0;
+}
