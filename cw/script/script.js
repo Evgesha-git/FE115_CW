@@ -17,16 +17,31 @@ class Note{
 class Notes{
     static message = 'Некоторое сообщение';
     constructor() {
-        this.noteId = 0;
+        // this.noteId = 0;
         this.notes = [];
     }
 
     add(data){
         if(data.content && data.content.length > 0) {
-            ++this.noteId;
+            // this.noteId++
+            // let noteId = Math.floor(Math.random() * 100);
+            let noteId = this.getId();
+
+
             let note = new Note(data);
-            note.edit({id: this.noteId})
-            this.notes.push(note)
+            note.edit({id: noteId});
+            this.notes.push(note);
+            console.log(this.notes);
+        }
+    }
+
+    getId(){
+        let noteId = Math.floor(Math.random() * 100);
+        if(this.notes) return noteId;
+        if (this.notes.some(data => data.id === noteId)){
+            this.getId()
+        }else{
+            return noteId
         }
     }
 
@@ -34,6 +49,7 @@ class Notes{
         let noteFind = this.notes.find(note => {
             return note.data.id === id ? note: null;
         })
+        console.log(noteFind)
         noteFind.edit(data);
     }
 
@@ -43,11 +59,6 @@ class Notes{
 
     getNotes(){
         return this.notes;
-    }
-
-    static couter(){
-        console.log(`Инструкция по пользованию приложением,
-                написанная нна мильен строк!`)
     }
 }
 
@@ -95,10 +106,29 @@ class NoteUi extends Notes{
         formNote.addEventListener('submit', (e) => {
             this.addNote(e)
         })
+
+        let cookie = this.getCookie('notesExp')
+
+        if (!cookie){
+            this.storage = [];
+        }
+
+        let dataStorage = this.storage;
+
+        if (dataStorage){
+            dataStorage.forEach(elem => this.add(elem.data))
+        }
+
+        this.createNote();
     }
 
     addNote(e){
         e.preventDefault();
+        // let regExp = [/[0-9a-z]@[a-z].[a-z]{2,6}/g, /[0-9A-Za-z]/g]
+        // let regTrue = this.textInputs.every((elem, i) => this.reg(elem, regExp[i]))
+        //
+        // if(!regTrue) return;
+
         let data = this.textInputs.reduce((obj, elem) => ({...obj, [elem.name]:elem.value}),{})
         console.log(this);
         this.add(data);
@@ -107,9 +137,26 @@ class NoteUi extends Notes{
         console.log(this.notes);
     }
 
+    // reg(elem, regExp){
+    //     if(regExp.test(elem.value)){
+    //        return true
+    //     }else{
+    //         elem.style.border = '1px solid red'
+    //         return false
+    //     }
+    // }
+
     createNote(){
         this.notesList.innerHTML = '';
-        let dataList = this.getNotes()
+        // let dataStorage = this.storage;
+        let dataList = this.getNotes();
+
+        // if(dataStorage){
+        //     this.notes = dataStorage;
+        // }
+
+        // let dataList = this.getNotes();
+
         dataList.map(elem => {
             let elemList = document.createElement('li');
             elemList.setAttribute('class', 'note_list_item');
@@ -146,6 +193,19 @@ class NoteUi extends Notes{
                 this.saveNote(e, elem.data.id, listTitle, listContent)
             })
         })
+
+        this.storage = this.notes;
+        this.setCookie('notesExp', 1, {'max-age': 10})
+    }
+
+    get storage(){
+        let stoage = localStorage.getItem('notes');
+        return JSON.parse(stoage)
+    }
+
+    set storage(data){
+        let dataStorage = JSON.stringify(data);
+        localStorage.setItem('notes', dataStorage);
     }
 
     editNote(title, content){
@@ -169,25 +229,34 @@ class NoteUi extends Notes{
 
             this.edit(id, data);
         }
+        this.storage = this.notes;
+    }
+
+    //Готовое решение
+    getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    setCookie(name, value, options = {}) {
+        options = {
+            path: '/',
+            // при необходимости добавьте другие значения по умолчанию
+            ...options
+        };
+        if (options.expires instanceof Date) {
+            options.expires = options.expires.toUTCString();
+        }
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        for (let optionKey in options) {
+            updatedCookie += "; " + optionKey;
+            let optionValue = options[optionKey];
+            if (optionValue !== true) {
+                updatedCookie += "=" + optionValue;
+            }
+        }
+        document.cookie = updatedCookie;
     }
 }
-
-function User(name, age){
-    let count = 0;
-    this.name = name;
-    this.age = age;
-
-    this.info = function (){
-        User.counter();
-        return count
-    }
-}
-
-User.counter = function (){
-    User.count++
-}
-
-let o1 = new User();
-let o2 = new User();
-let o3 = new User();
-let o4 = new User();
