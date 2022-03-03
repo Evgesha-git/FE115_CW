@@ -1,0 +1,11 @@
+.tooltip{
+    position: absolute;
+    background: #ffea00;
+    width: 150px;
+    top: 0;
+    left: 0;
+}
+
+h1{
+    width: 200px;
+}
