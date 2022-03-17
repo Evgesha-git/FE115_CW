@@ -1,85 +1,116 @@
-console.log('Data waiting...')
+/*
+* FotoFind - логика поиска фотографий
+* FotiUI - графический интерфейс
+*  */
 
-// setTimeout(() => {
-//     console.log('Data sent...')
-//     const dataServer = {
-//         site: 'google.com',
-//         status: '200',
-//     }
-//     setTimeout(() => {
-//         console.log('Data client...')
-//         dataServer.modifite = true;
-//         console.log(dataServer)
-//         setTimeout(() => {
-//             dataServer.sent = true;
-//             console.log(dataServer);
-//         }, 2000)
-//     }, 2000)
-// }, 2000)
+class FotoFind{
+    constructor() {
+        this.fotos = [];
+    }
 
-let p = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        console.log('Data sent...')
-        const dataServer = {
-            site: 'google.com',
-            status: '400',
-        }
-        if(dataServer.status !== '200'){
-            reject(`Error ${dataServer.status}`)
-        }else{
-            resolve(dataServer)
-        }
-    }, 2000)
+    async flikr(tag, perPage){
+        let key = '4aca8261d4a83368e00c72efe14da470';
+        let fotos = [];
+        await fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${tag}&per_page=${perPage}&format=json&nojsoncallback=1`)
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                data.photos.photo.forEach(photo => {
+                    let {id, farm, secret, server, title} = photo
+                    // https://farm${url.farm}.staticflickr.com/${url.server}/${url.id}_${url.secret}_w.jpg
+                    let urlData = {
+                        url: `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}_b.jpg`,
+                        titleData: title,
+                    }
+                    fotos.push(urlData);
+                });
+            });
+        this.fotos = fotos;
+        console.log(this.fotos);
+    }
 
-})
-
-p.then(data => {
-    return new Promise(((resolve, reject) => {
-        setTimeout(() => {
-            console.log('Data client...')
-            data.modifite = true;
-            resolve(data)
-        }, 4000)
-    }))
-
-}).then(rez => {
-        console.log(rez)
-}).catch(err => {
-    document.body.innerHTML = `<h1> Error </h1>
-<div>${err}</div>`
-    console.error(err)
-}).finally(() => {
-    console.log('Is finally')
-})
-
-let timer = (ms) => new Promise(resolve => {
-    setTimeout(() => {
-        resolve(`That ${ms / 1000} sec`);
-    }, ms);
-});
-
-function timer2(ms) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(`That ${ms / 1000} sec`);
-        }, ms);
-    })
+    getFotos(){
+        return this.fotos;
+    }
 }
 
-// timer2(5000).then(rez => console.log(rez))
-//
-// timer(2000).then(rez => console.log(rez))
-// timer(4000).then(rez => console.log(rez))
+class FotoUI extends FotoFind{
+    constructor(max) {
+        super();
+        this._max = +max;
+        this.init();
+    }
 
-let f1 = fetch('https://jsonplaceholder.typicode.com/todos/1')
-    .then(response => response.json())
+    init(){
+        let container = document.createElement('div');
+        container.classList.add('container');
+        let title = document.createElement('h1');
+        title.innerText = 'Фотогалерея';
 
-let f2 = fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
+        let formFind = document.createElement('form');
 
+        let text = document.createElement('input');
+        text.setAttribute('type', 'text');
 
-Promise.all([f1, f2])
-    .then(json => console.log(json))
+        let perPage = document.createElement('select');
+        let options = this.createSelect(this._max)
+        options.forEach(option => {
+            perPage.append(option);
+        });
 
-Promise.race([f1, f2])
-    .then(json => console.log(json))
+        let find = document.createElement('button');
+        find.setAttribute('type', 'submit');
+        find.innerText = 'Поиск';
+
+        let containerFind = document.createElement('div');
+        containerFind.setAttribute('class', 'container_find')
+        this._containerFind = containerFind;
+
+        formFind.append(text, perPage, find);
+
+        formFind.addEventListener('submit', e => this.find(e, text.value, perPage.value))
+
+        container.append(title, formFind, containerFind);
+
+        document.body.append(container);
+    }
+
+    createSelect(m){
+        let options = [];
+        for (let i = 0; i <= m; i += 5){
+            let option = document.createElement('option');
+            option.setAttribute('value', `${i}`);
+            i === 0 ? option.innerText = '1' : option.innerText = i.toString();
+            options.push(option);
+        }
+        return options
+    }
+
+    async find(e, text, perPage){
+        e.preventDefault();
+        console.log(text);
+        console.log(perPage);
+        await this.flikr(text, +perPage)
+
+        this.render()
+    }
+
+    render(){
+        this._containerFind.innerHTML = '';
+        let fotos = this.getFotos();
+        console.log(fotos)
+
+        fotos.forEach(foto => {
+            let div = document.createElement('div');
+            div.classList.add('img');
+
+            let img = document.createElement('img');
+            img.setAttribute('src', foto.url);
+            img.setAttribute('title', foto.titleData);
+
+            div.append(img);
+
+            this._containerFind.append(div);
+        });
+    }
+}
