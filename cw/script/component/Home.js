@@ -1,4 +1,5 @@
 function Home(){
+    this.title ='Home'
     const elem = document.createElement('div');
     elem.classList.add('home_component');
     elem.innerHTML = `
@@ -10,4 +11,9 @@ function Home(){
     }
 }
 
-export default new Home().init()
+let elem = new Home();
+let init = elem.init();
+let title = elem.title;
+
+export default init;
+export {title};

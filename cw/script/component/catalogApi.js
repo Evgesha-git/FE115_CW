@@ -1,6 +1,6 @@
 async function catalogData(){
     // let data = [];
-    return await fetch('https://fakestoreapi.com/products')
+    return await fetch('https://fakestoreapi.com/products/')
         .then(resp => resp.json())
         .then(data => {
             return data;

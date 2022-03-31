@@ -1,3 +1,5 @@
+import {widget} from "./Card.js";
+
 function Header(){
     const elem = document.createElement('div');
     elem.classList.add('header_component');
@@ -14,11 +16,10 @@ function Header(){
             <li><a href="#abaut">Abaut</a></li>
             </ul>
         </nav>
-        <div>
-            <a href="#card">Card</a>
-            <span>o</span>
-        </div>
+        ${widget.outerHTML}
     `
+    // elem.append(widget)
+
     this.init = () => {
         return elem;
     }

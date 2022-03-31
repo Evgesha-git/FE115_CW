@@ -1,4 +1,4 @@
-import ProductCard from "./ProductCard.js";
+import product from "./ProductCard.js";
 
 function Main(){
     let elem = document.createElement('div');
@@ -11,13 +11,17 @@ function Main(){
             elem.innerHTML = ''
             let index = hash.indexOf('/');
             let id = hash.slice(index + 1);
-            let item = await ProductCard.render(id);
+            let item = await product.render(id);
+            document.title = product.title;
+            // console.log(item);
             elem.append(item);
         }
         import(`./${hash}.js`)
             .then(module => {
                 elem.innerHTML = '';
-                elem.append(module.default)
+                console.log(module);
+                elem.append(module.default);
+                document.title = module.title;
             });
     }
 

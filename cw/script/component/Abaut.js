@@ -1,4 +1,5 @@
 function Abaut(){
+    this.title = 'About'
     const elem = document.createElement('div');
     elem.classList.add('about_component');
     elem.innerHTML = `
@@ -10,4 +11,9 @@ function Abaut(){
     }
 }
 
-export default new Abaut().init()
+let elem = new Abaut();
+let init = elem.init();
+let title = elem.title;
+
+export default init;
+export {title};

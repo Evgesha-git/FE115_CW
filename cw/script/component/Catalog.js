@@ -1,6 +1,8 @@
 import {catalogData} from "./catalogApi.js";
+import spinner from "./spinner.js";
 
 function Catalog(){
+    this.title = 'Catalog'
     const elem = document.createElement('div');
     elem.classList.add('catalog_component');
     elem.innerHTML = `<h1>Catalog</h1>`
@@ -9,7 +11,13 @@ function Catalog(){
     let data = []; //Есть два варианта, либо использовать локальное храниище, либо использовать прелоадер
 
     const render = async (data) => {
+        let spin = spinner();
+        container.append(spin);
+        let localCard = localStorage.getItem('card');
+        localCard = JSON.parse(localCard);
+
         data = await catalogData();
+        container.removeChild(spin);
         data.forEach(data => {
             let productCard = document.createElement('div');
             productCard.classList.add('card');
@@ -28,10 +36,26 @@ function Catalog(){
             let priceCard = document.createElement('p');
             priceCard.classList.add('card_price');
             priceCard.innerText = data.price;
-            productCard.append(imgLinc, title, priceCard);
+            let btnAdd = document.createElement('button');
+            if (localCard && localCard.some(d => d.id === data.id)){
+                btnAdd.innerText = 'Added';
+                btnAdd.disabled = true;
+            }else{
+                btnAdd.innerText = 'Add';
+            }
+            productCard.append(imgLinc, title, priceCard, btnAdd);
             container.append(productCard);
             // console.log(data);
             // Добавить кнопку "В корзину"
+            btnAdd.addEventListener('click', () => {
+                import('./Card.js')
+                    .then(module => {
+                        if (module.addCard(data)){
+                            btnAdd.innerText = 'Added';
+                            btnAdd.disabled = true;
+                        }
+                    })
+            })
         })
     }
 
@@ -44,4 +68,9 @@ function Catalog(){
     }
 }
 
-export default new Catalog().init()
+let elem = new Catalog();
+let init = elem.init();
+let title = elem.title;
+
+export default init;
+export {title};
