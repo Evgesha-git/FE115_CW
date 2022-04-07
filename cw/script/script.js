@@ -1,206 +1,153 @@
-/*
-* 1 - Создание элементов
-* 2 - отображение на страницк
-* */
-
-const main = document.createElement('main');
-main.classList.add('main');
-main.setAttribute('data-id', 'r7ew9rw9');
-main.innerText = 'Main content';
-
-const h2 = document.createElement('h2');
-h2.innerText = 'Header';
-
-const p = document.createElement('p');
-p.innerText = 'Lorem ipsum dolor sit amet, consectetur.';
-
-document.querySelector('#app').append(main, h2, p);
-
-//----------------------------------------
-
-
-
-const h2R = React.createElement('h2', null, 'Header react');
-const pR = React.createElement('p', null, 'Lorem ipsum dolor sit amet, consectetur.');
-
-const mainReact = React.createElement('name',
-    {
-        className: 'main class2 class3',
-        'data-id': '7er98t7e9',
-    },
-    [
-        'Main react content',
-        h2R,
-        pR,
-        React.createElement('img', {
-            src: 'https://via.placeholder.com/60',
-            alt: '###',
-        })
-    ]);
-
-ReactDOM.render(mainReact, document.querySelector('#app-react'));
-
-/*
-*3 - создание компонентов
-* */
-
-function Logo(){
-    this.create = () => {
-        this.elem = document.createElement('div');
-        this.elem.classList.add('logo');
-        this.elem.innerHTML = `
-            <a href='#'><img src="https://via.placeholder.com/60"/>Home</a>
-        `;
-        return this.elem;
-    }
-}
-
-const logo = new Logo().create();
-document.querySelector('#app').append(logo);
-
-function ReactLogo(){
-    const logo = React.createElement('div',
-        {className: 'logo'},
-        React.createElement('a',
-            {href: '#'},
-            [
-                React.createElement('img',
-                    {src: 'https://via.placeholder.com/60'},
-                    ),
-                'Home'
-            ]
-            )
-    )
-    return logo;
-}
-
-ReactDOM.render(
-    React.createElement('div', null, [mainReact, ReactLogo]),
-    document.querySelector('#app-react')
-);
-
-// JSX => React
-
-ReactDOM.render(
-    <React.Fragment>
-        <main className='main' data-id='y243iy423i'>
-            <h2 id="title-3">Header JSX</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur.</p>
-            <div className="logo">
-                <a href="#"><img src="https://via.placeholder.com/60" alt=""/>Home</a>
-            </div>
-        </main>
-    </React.Fragment>,
-    document.querySelector('#app-react-jsx')
-)
-
-/*
-* 4 - пропсы
-* 5 - стейты
-* 6 - события
-* */
-
-function Header(props){
-    //code
-    return (<header className='header'>
-        Header content {props.content}, {props.a + props.b}
-    </header>);
-}
-
-class Header2 extends React.Component{
-    constructor(props) {
-        super();
-    }
-    //code
-    render(){
-        return(
-            <header className='header2'>
-                Header Content {this.props.content}, {this.props.a + this.props.b}
-            </header>
-        )
-    }
-}
-
-function Block(props){
-    return <div>{props.children}</div>
-}
-
-ReactDOM.render(
-    <>
-        <Header content='Некоторый контент' a={12} b={6}/>
-        <Header2 content='Некоторый контент' a='12' b='6'/>
-        <Block>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit, magni.
-        </Block>
-    </>,
-    document.querySelector('#app-react-jsx-2')
-)
-
-/*
-* 5 - стейты
-* 6 - события
-* */
-
-function ButtonLike(){
+function App(){
     const [count, setCount] = React.useState(0);
-    const [text, setText] = React.useState('')
-    //onClick
-    //onChange
-    //onKeyUp
 
-    const likeHandler = (event) =>{
-        // alert('like');
-        console.log(event);
-        let value = count
+    console.log('Function component create');
+
+    function clickHandler(){
+        let value = count;
         setCount(++value);
     }
 
+    React.useEffect(() => {
+        console.log('Function component')
+    });
     return (
-        <button onClick={likeHandler}>Like {count}</button>
-    )
+        <>
+            <div>Function component</div>
+            <button onClick={clickHandler}>Add</button> {count}
+        </>
+    );
 }
 
-class ButtonDislike extends React.Component{
-    constructor() {
-        super();
-        this.state = {
-            count: 0,
-            text: ''
-        };
-        this.dislikeHandler = this.dislikeHandler.bind(this);
-    }
-    dislikeHandler(){
-        console.log(this);
-        // alert('Dislike');
-        let value = this.state.count
-        this.setState({
-        count: ++value,
-        });
+class Test extends React.Component{
+
+    componentDidMount(){
+        console.log('Component mount')
     }
 
-    textHandler (event){
-        console.log(event);
-        let value = event.target.value;
-        this.setState({
-            text: value,
-        })
+    componentWillUnmount(){
+        console.log('Component unmount')
     }
 
     render(){
         return (
-            <div>
-                <button onClick={this.dislikeHandler}>Dislike {this.state.count}</button>
-                <input onChange={(e) => this.textHandler(e)} type="text"/>
-                <span>{this.state.text}</span>
-            </div>
+            <div>Test</div>
         )
+    }
+}
+
+class App2 extends React.Component{
+    constructor() {
+        super();
+        console.log('Class component create');
+        this.state = {
+            count: 0,
+            test: null,
+        }
+    }
+
+    clickHandler(){
+        let value = this.state.count
+        if (value != 4) {
+            this.setState({
+                count: ++value
+            })
+        }else{
+            this.setState({
+                count: ++value,
+                test: <Test/>
+            })
+        }
+        if(value == 9){
+            this.setState({
+                count: 0,
+                test: null
+            })
+        }
+    }
+
+    componentDidMount(){
+        // console.log('Class component');
+    }
+
+    componentDidUpdate(){
+        // console.log('Class component update');
+    }
+
+    render(){
+        return (
+            <>
+                <div>Class component</div>
+                <button onClick={() => this.clickHandler()}>Add</button> {this.state.count}
+                {this.state.test}
+            </>
+        );
     }
 }
 
 ReactDOM.render(
     <>
-        <ButtonLike/>
-        <ButtonDislike/>
+        <App/>
+        <App2/>
     </>,
-    document.querySelector('#app-react-jsx-3')
+    document.querySelector('#app')
 )
+
+// rest, spread
+
+function f1(a, b, c){
+    console.log(a, b, c);
+    console.log(arguments);
+}
+
+f1(1, 2, 'rer', 4732, 'dfs', 565);
+
+const f2 = (a, b, c, ...arg) => {
+    console.log(a, b, c);
+    console.log(arg);
+}
+
+f2(1, 2, 'rer', 4732, 'dfs', 565);
+
+//----------------------
+// Деструктуризация
+let arr = [1, 2, 3, () => alert('f3')]
+const [a, b, c, f3] = arr;
+
+console.log(a);
+console.log(b);
+console.log(c);
+// f3();
+
+let obj ={
+    a2: 1,
+    b2: 2,
+    f4: () => alert('f4')
+}
+
+const {b2: x, f4: x2} = obj;
+
+console.log(x);
+// x2();
+
+//--------------
+
+
+let arr2 = [1, 2, 3]
+let arr3 = [4, 5, 6]
+let arr4 = [0, ...arr2, ...arr3]
+console.log(arr4);
+
+let obj2 = ({...obj, c2: 5});
+
+console.log(obj2);
+
+let arr5 = [1, 2, 3, 4];
+let arr6 = arr5;
+let arr7 = [...arr5];
+
+arr5[2] = 10;
+
+console.log(arr5);
+console.log(arr6);
+console.log(arr7);
