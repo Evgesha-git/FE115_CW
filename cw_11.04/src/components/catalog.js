@@ -1,21 +1,34 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import {ProductPreview} from "./product";
 import './catalog.css';
+import {ProductContext} from '../App';
 
-function Catalog(){
-    const [data, setData] = useState([]);
+function Catalog(props){
+    const {data, setData} = useContext(ProductContext);
 
-    function getData(){
-        if(data.length === 0) fetch('https://fakestoreapi.com/products/')
-            .then(resp => resp.json())
-            .then(data => setData([...data]))
-    }
+    // function getData(){
+    //     if (data.length === 0) {
+    //         if (JSON.parse(localStorage.getItem('catalog')).length > 0) {
+    //             setData([...JSON.parse(localStorage.getItem('catalog'))])
+    //             console.log(JSON.parse(localStorage.getItem('catalog')));
+    //             return;
+    //         } else {
+    //             fetch('https://fakestoreapi.com/products/')
+    //                 .then(resp => resp.json())
+    //                 .then(data => {
+    //                     setData([...data])
+    //                     localStorage.setItem('catalog', JSON.stringify(data));
+    //
+    //                 });
+    //         }
+    //     }
+    // }
 
     useEffect(() =>{
-        // console.log(data)
+        console.log(data)
     })
 
-    getData();
+    // getData();
 
     return (
         <div className='product-container'>
@@ -26,8 +39,10 @@ function Catalog(){
                     price={product.price}
                     image={product.image}
                     id={product.id}
+                    add={props.add}
                 />
             })}
+            {/*<Outlet/>*/}
         </div>
     )
 }
