@@ -5,10 +5,10 @@ import {ProductContext} from "../App";
 import {CardContext} from "../App";
 
 function ProductCard(props){
-    const {data, setData} = useContext(ProductContext);
-    const {card, setCard} = useContext(CardContext);
+    const {dataFind} = useContext(ProductContext);
+    const {card} = useContext(CardContext);
     const id = useParams()
-    const product = data.find(elem => elem.id === +id.productId);
+    const product = dataFind.find(elem => elem.id === +id.productId);
     console.log(product)
     return (
         <div className="product-card">
@@ -25,7 +25,7 @@ function ProductCard(props){
 
 function ProductPreview(props){
     const {title, image, price, id, add} = props;
-    const {card, setCard} = useContext(CardContext);
+    const {card} = useContext(CardContext);
     return (
         <div className='product-preview'>
             <div className='product-image'>

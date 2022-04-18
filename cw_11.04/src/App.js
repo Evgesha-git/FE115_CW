@@ -17,6 +17,7 @@ export const CardContext = React.createContext();
 function App() {
     const [data, setData] = useState([]);
     const [card, setCard] = useState([]);
+    const [dataFind, setDataFind] = useState([]);
 
     function getData(){
         if (data.length === 0) {
@@ -37,10 +38,9 @@ function App() {
 
     function getCard(){
         if (card.length === 0){
-            if (localStorage.getItem('card')){
+            console.log(localStorage.getItem('card'));
+            if (JSON.parse(localStorage.getItem('card')).length !== 0){
                 setCard([...JSON.parse(localStorage.getItem('card'))])
-            }else{
-                return;
             }
         }
     }
@@ -60,12 +60,15 @@ function App() {
     }
 
     useEffect(() => {
-        localStorage.setItem('card', JSON.stringify(card));
+        if(dataFind.length === 0){
+            setDataFind(data);
+        }
+        console.log(data);
     })
 
     return (
         <CardContext.Provider value={{card, setCard}}>
-            <ProductContext.Provider value={{data, setData}}>
+            <ProductContext.Provider value={{dataFind, setDataFind}}>
                 <React.Fragment>
                     <Routes>
                         <Route path='/' element={<Nav/>}>

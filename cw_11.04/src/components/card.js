@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import './card.css'
 
 function CardWidget(){
-    const {card, setCard} = useContext(CardContext);
+    const {card} = useContext(CardContext);
 
     return (
         <div>
@@ -16,14 +16,23 @@ function CardWidget(){
 
 function Card(){
     const {card, setCard} = useContext(CardContext);
-    const {data, setData} = useContext(ProductContext);
-    const dataCard = data.filter(item => card.includes(item.id));
+    const {dataFind} = useContext(ProductContext);
+    const dataCard = dataFind.filter(item => card.includes(item.id));
     const price = dataCard.reduce((sum, item) => sum += parseFloat(item.price), 0) || '0';
     console.log(dataCard);
 
+    function removeItem(id){
+        if (card.length === 1 && card[0] === id){
+            setCard([]);
+            localStorage.setItem('card', JSON.stringify([]));
+        }else{
+            setCard([...card.filter(el => el !== id)]);
+        }
+    }
+
     return (
         <div className='card-container'>
-            {dataCard.map((item, i) => {
+            {dataCard.length > 0 ? dataCard.map((item, i) => {
                 return (
                     <div className='card-item' key={i.toString()}>
                         <div className='card-image'>
@@ -31,9 +40,12 @@ function Card(){
                         </div>
                         <h2>{item.title}</h2>
                         <p>{item.price} $</p>
+                        <button
+                            onClick={() => removeItem(item.id)}
+                        >Del</button>
                     </div>
                 )
-            })}
+            }) : <p>Корзина пуста</p>}
             <span>Total price: {price}$</span>
         </div>
     )
