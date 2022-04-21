@@ -1,14 +1,18 @@
 import './App.css';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, lazy, Suspense} from "react";
 import Nav from "./components/nav";
 import {Routes, Route} from "react-router-dom";
 import Home from "./components/home";
-import Catalog from "./components/catalog";
+// import Catalog from "./components/catalog";
 import About from "./components/about";
-import Card from "./components/card";
+// import Card from "./components/card";
 import Footer from "./components/footer";
-import ProductCard from "./components/product";
+// import ProductCard from "./components/product";
 // import ProductCard from "./components/productCard";
+
+const Catalog = lazy(() => import("./components/catalog"));
+const ProductCard = lazy(() => import("./components/product"));
+const Card = lazy(() => import("./components/card"));
 
 export const ProductContext = React.createContext();
 export const CardContext = React.createContext();
@@ -73,11 +77,23 @@ function App() {
                     <Routes>
                         <Route path='/' element={<Nav/>}>
                             <Route index element={<Home/>}/>
-                            <Route path='catalog' element={<Catalog add={addCard}/>}/>
-                            <Route path='catalog/:productId' element={<ProductCard add={addCard}/>}/>
+                            <Route path='catalog' element={
+                                <Suspense fallback={'Loading...'}>
+                                    <Catalog add={addCard}/>
+                                </Suspense>
+                            }/>
+                            <Route path='catalog/:productId' element={
+                                <Suspense fallback={'Loading...'}>
+                                    <ProductCard add={addCard}/>
+                                </Suspense>
+                            }/>
 
                             <Route path='about' element={<About/>}/>
-                            <Route path='card' element={<Card/>}/>
+                            <Route path='card' element={
+                                <Suspense fallback={'Loading...'}>
+                                    <Card/>
+                                </Suspense>
+                            }/>
                         </Route>
                     </Routes>
                     <Footer/>

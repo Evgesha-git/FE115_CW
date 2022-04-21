@@ -1,11 +1,12 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {ProductPreview} from "./product";
 import './catalog.css';
 import {ProductContext} from '../App';
 import usePagination from "./psgination/pgination";
 
 function Catalog(props){
-    const {dataFind} = useContext(ProductContext);
+    const {dataFind, setDataFind} = useContext(ProductContext);
+    const [dataCatalog, setDataCatalog] = useState(dataFind)
     const {
             totalPage,
             nextPage,
@@ -16,8 +17,11 @@ function Catalog(props){
             page,
         } = usePagination({
         contentPerPage: 3,
-        count: dataFind.length,
-    })
+        count: dataCatalog.length,
+    });
+
+
+    const category = [...new Set(dataFind.reduce((f, i) => [...f, i.category], []))];
 
     // function getData(){
     //     if (data.length === 0) {
@@ -37,8 +41,16 @@ function Catalog(props){
     //     }
     // }
 
+    function categoryHandler(f){
+        let filterData = dataFind.filter(item => item.category === f);
+        setDataCatalog(filterData);
+    }
+
     useEffect(() =>{
-        console.log(dataFind)
+        let category = "men's clothing";
+        let f = [...new Set(dataFind.reduce((f, i) => [...f, i.category], []))];
+        console.log(dataFind);
+        console.log(f);
     })
 
     // getData();
@@ -75,8 +87,18 @@ function Catalog(props){
                     &rarr;
                 </button>
             </div>
+            <div className="category">
+                {category.map((item, i) => {
+                    return (
+                        <>
+                            <input type='radio' name={`cat`} id={i} key={i.toString()} onChange={() => categoryHandler(item)}/>
+                            <label htmlFor={i} key={i.toString()}>{item}</label>
+                        </>
+                    )
+                })}
+            </div>
             <div className="container-page">
-                {dataFind.slice(firstContentIndex, lastContentIndex).map((product, index) =>{
+                {dataCatalog.slice(firstContentIndex, lastContentIndex).map((product, index) =>{
                     return <ProductPreview
                         key={index.toString()}
                         title={product.title}
