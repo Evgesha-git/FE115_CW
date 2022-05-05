@@ -1,0 +1,38 @@
+{
+  "name": "webpach_cw",
+  "version": "1.0.0",
+  "description": "webpack cw",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Evgesha-git/FE115_CW.git"
+  },
+  "keywords": [
+    "js",
+    "webpack"
+  ],
+  "author": "FE115_CW",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Evgesha-git/FE115_CW/issues"
+  },
+  "homepage": "https://github.com/Evgesha-git/FE115_CW#readme",
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0"
+  },
+  "dependencies": {
+    "jquery": "^3.6.0"
+  }
+}
