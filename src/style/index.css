@@ -1,0 +1,12 @@
+h1{
+    text-align: center;
+}
+
+.logo{
+    background: url('../image/webpack-image.png');
+    background-size: cover;
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+
+}
